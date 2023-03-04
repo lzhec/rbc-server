@@ -7,7 +7,7 @@ import {
   JoinTable,
 } from 'typeorm';
 
-import { User } from '../../user/model/user/user';
+import { User } from '@user/model/user/user';
 
 export enum DefaultRoleEnum {
   USER = 'USER',

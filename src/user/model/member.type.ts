@@ -1,4 +1,4 @@
-import { ApiProperty, ApiTags } from "@nestjs/swagger";
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
 
 export enum MemberTypeEnum {
   EMPLOYEE,

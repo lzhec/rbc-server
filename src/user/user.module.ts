@@ -11,8 +11,8 @@ import { Member } from './model/member';
 import { User } from './model/user/user';
 import { Group } from './model/group/group';
 import { Contact } from './model/contact/contact';
-import { Role } from '../role/model/role';
-import { RoleModule } from '../role/role.module';
+import { Role } from '@role/model/role';
+import { RoleModule } from '@role/role.module';
 import { Client } from './model/user/client';
 
 @Module({

@@ -11,7 +11,7 @@ import { Exclude } from 'class-transformer';
 import { Member } from '../member';
 import { Group } from '../group/group';
 import { Contact } from '../contact/contact';
-import { Role } from '../../../role/model/role';
+import { Role } from '@role/model/role';
 
 export class CreateUserDTO implements Pick<User, 'contacts' | 'password'> {
   @ApiProperty({ type: [Contact] })

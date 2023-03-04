@@ -1,9 +1,4 @@
-import {
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Tag } from '../tag/tag';
 

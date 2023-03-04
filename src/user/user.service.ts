@@ -2,11 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { RoleService } from '../role/role.service';
+import { RoleService } from '@role/role.service';
 import { CreateUserDTO, User } from './model/user/user';
 import { Employee } from './model/user/employee';
 import { Client } from './model/user/client';
-import { DefaultRoleEnum } from '../role/model/role';
+import { DefaultRoleEnum } from '@role/model/role';
 import { MemberType } from './model/member.type';
 import { ContactTypeEnum } from './model/contact/contact-type.enum';
 import { Contact } from './model/contact/contact';
@@ -57,18 +57,14 @@ export class UserService {
   }
 
   public async updateEmployee(dto: Employee): Promise<Employee> {
-    const res = await this.employeeRepository.save(
-      Employee.fromObject(dto)
-    );
-    console.log(res)
+    const res = await this.employeeRepository.save(Employee.fromObject(dto));
+    console.log(res);
 
     return res;
   }
 
   public async updateClient(dto: Client): Promise<Client> {
-    return await this.clientRepository.save(
-      Client.fromObject(dto)
-    );
+    return await this.clientRepository.save(Client.fromObject(dto));
   }
 
   public async getAllEmployees(): Promise<Employee[]> {

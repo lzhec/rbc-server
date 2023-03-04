@@ -10,7 +10,7 @@ import { hash } from 'object-hash';
 import { Member } from '../member';
 import { User } from '../user/user';
 import { MemberType } from '../member.type';
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('user_group')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })

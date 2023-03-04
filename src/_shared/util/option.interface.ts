@@ -4,6 +4,4 @@
  * фронтенду, имплементировать данный интерфейс.
  */
 
-export interface Option {
-
-}
+export interface Option {}
