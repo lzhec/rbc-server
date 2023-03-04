@@ -1,0 +1,42 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "**/*.d.ts"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": [
+          "error",
+          {
+            "allowExpressions": true
+          }
+        ],
+        "@typescript-eslint/explicit-member-accessibility": [
+          "error", 
+          {
+            "accessibility": "explicit",
+            "overrides": { 
+            "constructors": "no-public",
+            "accessors": "explicit", 
+            "methods": "explicit", 
+            "parameterProperties": "explicit" 
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

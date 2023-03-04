@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "node",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
+    "lib": ["es2019"],
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -16,6 +18,14 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@auth/*": ["src/auth/*"],
+      "@user/*": ["src/user/*"],
+      "@role/*": ["src/role/*"],
+      "@task/*": ["src/task/*"],
+      "@shared/*": ["src/_shared/*"],
+      "@config/*": ["src/config/*"]
+    }
   }
 }
