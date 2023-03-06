@@ -5,6 +5,7 @@ import {
   JoinTable,
   ManyToMany,
   TableInheritance,
+  OneToMany,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
@@ -12,6 +13,7 @@ import { Member } from '../member';
 import { Group } from '../group/group';
 import { Contact } from '../contact/contact';
 import { Role } from '@role/model/role';
+import { ContactTypeEnum } from '@user/model/contact/contact-type.enum';
 
 export class CreateUserDTO implements Pick<User, 'contacts' | 'password'> {
   @ApiProperty({ type: [Contact] })
@@ -23,7 +25,7 @@ export class CreateUserDTO implements Pick<User, 'contacts' | 'password'> {
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
-export class User extends Member {
+export abstract class User extends Member {
   @ApiProperty()
   @Column('varchar', { name: 'first_name', nullable: true })
   private firstName: string;
@@ -44,7 +46,7 @@ export class User extends Member {
   @Column('varchar', { nullable: false })
   public password: string;
 
-  @ManyToMany(() => Group, (group) => group.getUsers)
+  @ManyToMany(() => Group, (group) => group.users)
   @JoinTable({
     name: 'users_user_groups',
     joinColumn: {
@@ -58,9 +60,9 @@ export class User extends Member {
       foreignKeyConstraintName: 'fk_user_group_group_id',
     },
   })
-  private groups: Group[];
+  public groups: Group[];
 
-  @ManyToMany(() => Role, (role) => role.getUsers)
+  @ManyToMany(() => Role, (role) => role.users)
   @JoinTable({
     name: 'users_user_roles',
     joinColumn: {
@@ -75,6 +77,12 @@ export class User extends Member {
     },
   })
   private roles: Role[];
+
+  @ApiProperty({ type: [Contact] })
+  @OneToMany(() => Contact, (contact) => contact.user, {
+    cascade: true,
+  })
+  public contacts: Contact[];
 
   /**
    * Getters & Setters
@@ -136,9 +144,17 @@ export class User extends Member {
     return this.roles;
   }
 
-  // constructor(id: string) {
-  //   super(id);
-  // }
+  public setContacts(value: Contact[]) {
+    this.contacts = value;
+  }
+
+  public get getContacts(): Contact[] {
+    return this.contacts;
+  }
+
+  constructor(id?: string) {
+    super(id);
+  }
 
   public equals(object: Object): boolean {
     if (this === object) {
@@ -150,5 +166,19 @@ export class User extends Member {
     }
 
     return this.getId === (object as User).getId;
+  }
+
+  public getContactByType(type: ContactTypeEnum): Contact[] {
+    const result: Contact[] = [];
+
+    if (this.contacts) {
+      this.contacts.forEach((contact) => {
+        if (contact.getType === type) {
+          result.push(contact);
+        }
+      });
+    }
+
+    return result;
   }
 }

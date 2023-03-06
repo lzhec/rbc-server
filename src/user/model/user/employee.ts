@@ -37,7 +37,6 @@ export class Employee extends User {
     const employee = new Employee();
 
     Object.assign(employee, obj);
-    console.log(employee)
 
     return employee;
   }

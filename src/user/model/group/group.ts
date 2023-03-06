@@ -1,8 +1,10 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   TableInheritance,
 } from 'typeorm';
 import { hash } from 'object-hash';
@@ -10,7 +12,7 @@ import { hash } from 'object-hash';
 import { Member } from '../member';
 import { User } from '../user/user';
 import { MemberType } from '../member.type';
-import { ApiProperty } from '@nestjs/swagger';
+import { Contact } from '@user/model/contact/contact';
 
 @Entity('user_group')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -24,7 +26,7 @@ export abstract class Group extends Member {
   private description: string;
 
   @ApiProperty()
-  @ManyToMany(() => User, (user) => user.getGroups)
+  @ManyToMany(() => User, (user) => user.groups)
   @JoinTable({
     name: 'users_user_groups',
     joinColumn: {
@@ -38,7 +40,13 @@ export abstract class Group extends Member {
       foreignKeyConstraintName: 'fk_user_group_user_id',
     },
   })
-  private users: User[];
+  public users: User[];
+
+  @ApiProperty({ type: [Contact] })
+  @OneToMany(() => Contact, (contact) => contact.group, {
+    cascade: true,
+  })
+  public contacts: Contact[];
 
   /**
    * Getters & Setters
@@ -66,6 +74,14 @@ export abstract class Group extends Member {
 
   public get getUsers(): User[] {
     return this.users;
+  }
+
+  public setContacts(value: Contact[]) {
+    this.contacts = value;
+  }
+
+  public get getContacts(): Contact[] {
+    return this.contacts;
   }
 
   constructor(id: string) {

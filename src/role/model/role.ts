@@ -50,7 +50,7 @@ export class Role {
       foreignKeyConstraintName: 'fk_user_role_user_id',
     },
   })
-  private users: User[];
+  public users: User[];
 
   /**
    * Getters & Setters

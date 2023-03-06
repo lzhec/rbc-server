@@ -8,7 +8,8 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 import { ContactTypeEnum } from './contact-type.enum';
-import { Member } from '../member';
+import { User } from '@user/model/user/user';
+import { Group } from '@user/model/group/group';
 
 @Entity()
 export class Contact {
@@ -28,9 +29,13 @@ export class Contact {
   })
   public type: ContactTypeEnum;
 
-  @ManyToOne(() => Member, (member) => member.contacts)
-  @JoinColumn({ name: 'member_id' })
-  public member: Member;
+  @ManyToOne(() => User, (user) => user.contacts)
+  @JoinColumn({ name: 'user_id' })
+  public user: User;
+
+  @ManyToOne(() => Group, (group) => group.contacts)
+  @JoinColumn({ name: 'group_id' })
+  public group: Group;
 
   /**
    * Getters & Setters
@@ -40,7 +45,7 @@ export class Contact {
     return this.id;
   }
 
-  public set setValue(value) {
+  public setValue(value) {
     this.value = value;
   }
 
@@ -48,7 +53,7 @@ export class Contact {
     return this.value;
   }
 
-  public set setType(value) {
+  public setType(value) {
     this.type = value;
   }
 
@@ -56,15 +61,23 @@ export class Contact {
     return this.type;
   }
 
-  public set setMember(value) {
-    this.member = value;
+  public setUser(value) {
+    this.user = value;
   }
 
-  public get getMember(): Member {
-    return this.member;
+  public get getUser(): User {
+    return this.user;
   }
 
-  constructor(type: ContactTypeEnum, value: string) {
+  public setGroup(value) {
+    this.group = value;
+  }
+
+  public get getGroup(): Group {
+    return this.group;
+  }
+
+  constructor(type?: ContactTypeEnum, value?: string) {
     this.type = type;
     this.value = value;
   }

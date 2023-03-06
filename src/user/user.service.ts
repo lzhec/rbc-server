@@ -14,8 +14,9 @@ import { Contact } from './model/contact/contact';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(Employee)
     private employeeRepository: Repository<Employee>,
     @InjectRepository(Client)
     private clientRepository: Repository<Client>,
@@ -25,7 +26,7 @@ export class UserService {
   ) {}
 
   public async createEmployee(dto: CreateUserDTO): Promise<Employee> {
-    const newEmployee = this.employeeRepository.create(dto);
+    const newEmployee = await this.employeeRepository.create(dto);
     const defaultRole = await this.roleService.getRoleByName(
       DefaultRoleEnum.USER,
     );
@@ -37,7 +38,13 @@ export class UserService {
     );
     newEmployee.setMemberType(MemberType.EMPLOYEE);
 
-    return this.employeeRepository.save(newEmployee);
+    return await this.employeeRepository.save(newEmployee);
+    // const newContact = await this.contactRepository.findOneBy({
+    //   id: result.contacts[0].getId,
+    // });
+
+    // newContact.user = result;
+    // await this.contactRepository.save(newContact);
   }
 
   public async createClient(dto: CreateUserDTO): Promise<Client> {
@@ -57,10 +64,29 @@ export class UserService {
   }
 
   public async updateEmployee(dto: Employee): Promise<Employee> {
-    const res = await this.employeeRepository.save(Employee.fromObject(dto));
-    console.log(res);
+    // const employee = await this.userRepository.findOne({
+    //   where: { id: dto.id },
+    //   relations: {
+    //     contacts: true,
+    //   },
+    // });
+    //
+    // if (!employee) {
+    //   throw new NotFoundException(`Entity with id ${dto.id} not found`);
+    // }
+    //
+    // const res = await this.employeeRepository
+    //   .createQueryBuilder()
+    //   .update(Employee)
+    //   .set(dto)
+    //   .relation(Employee, 'contacts')
+    //   .of(employee)
+    //   .update(Contact)
+    //   .execute();
+    //
+    // const res = this.employeeRepository.findOneBy({ id: dto.id });
 
-    return res;
+    return await this.employeeRepository.save(Employee.fromObject(dto));
   }
 
   public async updateClient(dto: Client): Promise<Client> {

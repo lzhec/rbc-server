@@ -1,9 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { MemberType } from './member.type';
-import { Contact } from './contact/contact';
-import { ContactTypeEnum } from './contact/contact-type.enum';
-import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export abstract class Member {
@@ -21,13 +19,6 @@ export abstract class Member {
     nullable: false,
   })
   private memberType: MemberType;
-
-  @ApiProperty({ type: [Contact] })
-  @OneToMany('Contact', (contact: Contact) => contact.getMember, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  public contacts: Contact[];
 
   /**
    * Getters & Setters
@@ -53,16 +44,10 @@ export abstract class Member {
     return this.memberType;
   }
 
-  public setContacts(value: Contact[]) {
-    this.contacts = value;
-  }
-
-  public get getContacts(): Contact[] {
-    return this.contacts;
-  }
-
-  constructor(id: string) {
-    this.id = id;
+  constructor(id?: string) {
+    if (id) {
+      this.id = id;
+    }
   }
 
   public equals(object: Object): boolean {
@@ -75,19 +60,5 @@ export abstract class Member {
     }
 
     return this.getId === (object as Member).getId;
-  }
-
-  public getContactByType(type: ContactTypeEnum): Contact[] {
-    const result: Contact[] = [];
-
-    if (this.contacts) {
-      this.contacts.forEach((contact) => {
-        if (contact.getType === type) {
-          result.push(contact);
-        }
-      });
-    }
-
-    return result;
   }
 }
