@@ -48,7 +48,7 @@ export abstract class User extends Member {
 
   @ManyToMany(() => Group, (group) => group.users)
   @JoinTable({
-    name: 'users_user_groups',
+    name: 'user_user_group',
     joinColumn: {
       name: 'user_id',
       referencedColumnName: 'id',
@@ -64,7 +64,7 @@ export abstract class User extends Member {
 
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable({
-    name: 'users_user_roles',
+    name: 'user_user_role',
     joinColumn: {
       name: 'user_id',
       referencedColumnName: 'id',

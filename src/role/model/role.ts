@@ -25,7 +25,7 @@ export class CreateRoleDTO implements Pick<Role, 'name' | 'description'> {
 export class Role {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
-  private readonly id: string;
+  public readonly id: string;
 
   @ApiProperty()
   @Column('varchar', { nullable: false })
@@ -38,7 +38,7 @@ export class Role {
   @ApiProperty()
   @ManyToMany(() => User, (user) => user.getRoles)
   @JoinTable({
-    name: 'users_user_roles',
+    name: 'user_user_role',
     joinColumn: {
       name: 'role_id',
       referencedColumnName: 'id',
@@ -84,7 +84,7 @@ export class Role {
     return this.users;
   }
 
-  constructor(id: string, name: string, description?: string) {
+  constructor(id?: string, name?: string, description?: string) {
     this.id = id;
     this.name = name;
     this.description = description;

@@ -13,6 +13,7 @@ import { Member } from '../member';
 import { User } from '../user/user';
 import { MemberType } from '../member.type';
 import { Contact } from '@user/model/contact/contact';
+import { Service } from '@task/model/service/service';
 
 @Entity('user_group')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -28,7 +29,7 @@ export abstract class Group extends Member {
   @ApiProperty()
   @ManyToMany(() => User, (user) => user.groups)
   @JoinTable({
-    name: 'users_user_groups',
+    name: 'user_user_group',
     joinColumn: {
       name: 'group_id',
       referencedColumnName: 'id',
@@ -47,6 +48,22 @@ export abstract class Group extends Member {
     cascade: true,
   })
   public contacts: Contact[];
+
+  @ManyToMany(() => Service, (service) => service.groups)
+  @JoinTable({
+    name: 'service_user_group',
+    joinColumn: {
+      name: 'group_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_service_group_group_id',
+    },
+    inverseJoinColumn: {
+      name: 'service_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_service_group_service_id',
+    },
+  })
+  public services: Service[];
 
   /**
    * Getters & Setters
