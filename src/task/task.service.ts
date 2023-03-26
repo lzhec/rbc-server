@@ -42,4 +42,38 @@ export class TaskService {
   public async getAllPriorities(): Promise<Priority[]> {
     return await this.priorityRepository.find();
   }
+
+  public async createTask(dto: Task): Promise<Task> {}
+
+  public async createPriority(dto: Priority): Promise<Priority> {
+    const newPriority = this.priorityRepository.create(dto);
+
+    return this.priorityRepository.save(newPriority);
+  }
+
+  public async createStatus(dto: Status): Promise<Status> {
+    const newStatus = this.statusRepository.create(dto);
+
+    return this.statusRepository.save(newStatus);
+  }
+
+  public async createService(dto: Service): Promise<Service> {
+    const newService = this.serviceRepository.create(dto);
+
+    return this.serviceRepository.save(newService);
+  }
+
+  public async updateTask(dto: Task): Promise<Task> {}
+
+  public async updatePriority(dto: Priority): Promise<Priority> {
+    return await this.priorityRepository.save(Priority.fromObject(dto));
+  }
+
+  public async updateStatus(dto: Status): Promise<Status> {
+    return await this.statusRepository.save(Status.fromObject(dto));
+  }
+
+  public async updateService(dto: Service): Promise<Service> {
+    return await this.serviceRepository.save(Service.fromObject(dto));
+  }
 }

@@ -16,10 +16,16 @@ export class Priority {
   public color: string;
 
   @ApiProperty()
-  @Column('integer')
+  @Column('integer', { default: 0 })
   public weight: number;
 
   @ApiProperty()
   @Column('boolean', { default: false })
   public archived: boolean;
+
+  public static fromObject(obj: Priority): Priority {
+    const priority = new Priority();
+
+    return Object.assign(priority, obj);
+  }
 }

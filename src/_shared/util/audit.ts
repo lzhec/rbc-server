@@ -1,7 +1,7 @@
 import { Column } from 'typeorm';
 
 export class Audit {
-  @Column('date', { name: 'created_at' })
+  @Column('timestamp', { name: 'created_at' })
   public createdAt: Date;
 
   @Column('uuid', { name: 'created_by' })

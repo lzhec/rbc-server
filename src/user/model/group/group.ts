@@ -14,6 +14,7 @@ import { User } from '../user/user';
 import { MemberType } from '../member.type';
 import { Contact } from '@user/model/contact/contact';
 import { Service } from '@task/model/service/service';
+import { Task } from '@task/task/task';
 
 @Entity('user_group')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -64,6 +65,22 @@ export abstract class Group extends Member {
     },
   })
   public services: Service[];
+
+  @ManyToMany(() => Task, (task) => task.observerGroups)
+  @JoinTable({
+    name: 'task_observer_group',
+    joinColumn: {
+      name: 'observer_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_task_observer_group_observer_id',
+    },
+    inverseJoinColumn: {
+      name: 'task_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_task_observer_task_id',
+    },
+  })
+  public tasks: Task[];
 
   /**
    * Getters & Setters

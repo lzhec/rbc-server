@@ -3,17 +3,22 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { TaskType } from '@task/model/service/task-type';
-import { IntervalDate } from '@shared/util/interval-date';
-import { Audit } from '@shared/util/audit';
 import { Service } from '@task/model/service/service';
 import { Priority } from '@task/model/priority/priority';
 import { Status } from '@task/model/status/status';
+import { TaskHistory } from '@task/model/task-history/task-history';
+import { Group } from '@user/model/group/group';
+import { User } from '@user/model/user/user';
+import { IntervalDate } from '@shared/util/interval-date';
+import { Audit } from '@shared/util/audit';
 
 @Entity()
 export class Task {
@@ -25,6 +30,18 @@ export class Task {
   @ManyToOne(() => TaskType)
   @JoinColumn({ name: 'task_type_id' })
   public taskType: TaskType;
+
+  @ApiProperty()
+  @Column('varchar')
+  public name: string;
+
+  @ApiProperty()
+  @Column('long')
+  public number: number;
+
+  @ApiProperty()
+  @Column('text')
+  public description: string;
 
   @ApiProperty()
   @ManyToOne(() => Service)
@@ -51,6 +68,15 @@ export class Task {
   @Column(() => IntervalDate)
   public factIntervalDate: IntervalDate;
 
+  @Column('long', { name: 'quantity_plan' })
+  public quantityPlan: number;
+
+  @Column('long', { name: 'quantity_fact' })
+  public quantityFact: number;
+
+  @Column('text', { name: 'additional_field' })
+  public additionalField: string;
+
   @ApiProperty()
   @ManyToOne(() => Task)
   @JoinColumn({ name: 'parent_id' })
@@ -59,4 +85,66 @@ export class Task {
   @ApiProperty()
   @OneToMany(() => Task, (task) => task.parent)
   public children: Task[];
+
+  @ApiProperty()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'initiator_id' })
+  public initiator: User;
+
+  @ApiProperty()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'executor_id' })
+  public executor: User;
+
+  @ApiProperty()
+  @ManyToOne(() => Group)
+  @JoinColumn({ name: 'initiator_group_id' })
+  public initiatorGroup: Group;
+
+  @ApiProperty()
+  @ManyToOne(() => Group)
+  @JoinColumn({ name: 'executor_group_id' })
+  public executorGroup: Group;
+
+  @ApiProperty()
+  @ManyToMany(() => User, (member) => member.tasks)
+  @JoinTable({
+    name: 'task_observer',
+    joinColumn: {
+      name: 'task_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_task_observer_task_id',
+    },
+    inverseJoinColumn: {
+      name: 'observer_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'ffk_task_observer_observer_id',
+    },
+  })
+  public observers: User[];
+
+  @ApiProperty()
+  @ManyToMany(() => Group, (group) => group.tasks)
+  @JoinTable({
+    name: 'task_observer_group',
+    joinColumn: {
+      name: 'task_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_task_observer_task_id',
+    },
+    inverseJoinColumn: {
+      name: 'observer_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_task_observer_observer_id',
+    },
+  })
+  public observerGroups: Group[];
+
+  @ApiProperty()
+  @OneToMany(() => TaskHistory, (history) => history.task, { cascade: true })
+  public history: TaskHistory[];
+
+  @ApiProperty()
+  @Column('boolean', { default: false })
+  public archived: boolean;
 }

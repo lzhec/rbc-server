@@ -14,6 +14,7 @@ import { Group } from '../group/group';
 import { Contact } from '../contact/contact';
 import { Role } from '@role/model/role';
 import { ContactTypeEnum } from '@user/model/contact/contact-type.enum';
+import { Task } from '@task/task/task';
 
 export class CreateUserDTO implements Pick<User, 'contacts' | 'password'> {
   @ApiProperty({ type: [Contact] })
@@ -77,6 +78,22 @@ export abstract class User extends Member {
     },
   })
   private roles: Role[];
+
+  @ManyToMany(() => Task, (task) => task.observers)
+  @JoinTable({
+    name: 'task_observer',
+    joinColumn: {
+      name: 'observer_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_task_observer_observer_id',
+    },
+    inverseJoinColumn: {
+      name: 'task_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_task_observer_task_id',
+    },
+  })
+  public tasks: Task[];
 
   @ApiProperty({ type: [Contact] })
   @OneToMany(() => Contact, (contact) => contact.user, {

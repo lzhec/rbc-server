@@ -28,4 +28,10 @@ export class Status {
   @ApiProperty()
   @Column('text', { name: 'status_point' })
   public statusPoint: StatusPointEnum;
+
+  public static fromObject(obj: Status): Status {
+    const status = new Status();
+
+    return Object.assign(status, obj);
+  }
 }

@@ -83,4 +83,10 @@ export class Service {
     },
   })
   public taskTypes: TaskType[];
+
+  public static fromObject(obj: Service): Service {
+    const service = new Service();
+
+    return Object.assign(service, obj);
+  }
 }

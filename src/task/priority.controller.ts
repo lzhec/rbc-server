@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { TaskService } from '@task/task.service';
@@ -14,5 +14,19 @@ export class PriorityController {
   @Get()
   private getAll(): Promise<Priority[]> {
     return this.taskService.getAllPriorities();
+  }
+
+  @ApiOperation({ summary: 'Create new priority' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: Priority })
+  @Post()
+  private create(@Body() priority: Priority): Promise<Priority> {
+    return this.taskService.createPriority(priority);
+  }
+
+  @ApiOperation({ summary: 'Update priority' })
+  @ApiResponse({ status: HttpStatus.OK, type: Priority })
+  @Put()
+  private update(@Body() priority: Priority): Promise<Priority> {
+    return this.taskService.updatePriority(priority);
   }
 }
