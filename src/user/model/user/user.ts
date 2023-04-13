@@ -16,14 +16,6 @@ import { Role } from '@role/model/role';
 import { ContactTypeEnum } from '@user/model/contact/contact-type.enum';
 import { Task } from '@task/task/task';
 
-export class CreateUserDTO implements Pick<User, 'contacts' | 'password'> {
-  @ApiProperty({ type: [Contact] })
-  contacts: Contact[];
-
-  @ApiProperty()
-  password: string;
-}
-
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export abstract class User extends Member {

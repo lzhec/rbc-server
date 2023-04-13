@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Task } from '@task/task/task';
 import { User } from '@user/model/user/user';
 import { Comment } from '@task/model/comment/comment';
 
+@Entity()
 export class TaskHistory {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')

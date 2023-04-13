@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Request } from 'express';
 
 import { Task } from '@task/task/task';
 import { Service } from '@task/model/service/service';
@@ -43,7 +44,9 @@ export class TaskService {
     return await this.priorityRepository.find();
   }
 
-  public async createTask(dto: Task): Promise<Task> {}
+  public async createTask(dto: Task, req: Request): Promise<Task> {
+    return null;
+  }
 
   public async createPriority(dto: Priority): Promise<Priority> {
     const newPriority = this.priorityRepository.create(dto);
@@ -63,7 +66,9 @@ export class TaskService {
     return this.serviceRepository.save(newService);
   }
 
-  public async updateTask(dto: Task): Promise<Task> {}
+  public async updateTask(dto: Task): Promise<Task> {
+    return null;
+  }
 
   public async updatePriority(dto: Priority): Promise<Priority> {
     return await this.priorityRepository.save(Priority.fromObject(dto));

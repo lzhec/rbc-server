@@ -36,7 +36,7 @@ export class Task {
   public name: string;
 
   @ApiProperty()
-  @Column('long')
+  @Column('bigint')
   public number: number;
 
   @ApiProperty()
@@ -68,12 +68,15 @@ export class Task {
   @Column(() => IntervalDate)
   public factIntervalDate: IntervalDate;
 
-  @Column('long', { name: 'quantity_plan' })
+  @ApiProperty()
+  @Column('bigint', { name: 'quantity_plan' })
   public quantityPlan: number;
 
-  @Column('long', { name: 'quantity_fact' })
+  @ApiProperty()
+  @Column('bigint', { name: 'quantity_fact' })
   public quantityFact: number;
 
+  @ApiProperty()
   @Column('text', { name: 'additional_field' })
   public additionalField: string;
 

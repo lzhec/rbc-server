@@ -1,25 +1,28 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import { AuthService } from './auth.service';
-import { CreateUserDTO } from '@user/model/user/user';
 import { MemberType } from '@user/model/member.type';
+import { CreateUserDTO } from '@shared/dto/create-user.dto';
 
 @ApiTags('AuthorizationController')
 @Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiOperation({ summary: 'Login' })
   @Post('/login')
   private login(@Body() dto: CreateUserDTO): Promise<{ token: string }> {
     return this.authService.login(dto);
   }
 
-  @Post('/employee/signup')
+  @ApiOperation({ summary: 'Registration of new employee' })
+  @Post('/signup/employee')
   signUpEmployee(@Body() dto: CreateUserDTO): Promise<{ token: string }> {
     return this.authService.signUp(dto, MemberType.EMPLOYEE);
   }
 
-  @Post('/client/signup')
+  @Post('/signup/client')
   signUpClient(@Body() dto: CreateUserDTO): Promise<{ token: string }> {
     return this.authService.signUp(dto, MemberType.CLIENT);
   }

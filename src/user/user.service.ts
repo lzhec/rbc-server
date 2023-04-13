@@ -3,13 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { RoleService } from '@role/role.service';
-import { CreateUserDTO, User } from './model/user/user';
+import { User } from './model/user/user';
 import { Employee } from './model/user/employee';
 import { Client } from './model/user/client';
 import { DefaultRoleEnum } from '@role/model/role';
 import { MemberType } from './model/member.type';
 import { ContactTypeEnum } from './model/contact/contact-type.enum';
 import { Contact } from './model/contact/contact';
+import { CreateUserDTO } from '@shared/dto/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -126,5 +127,33 @@ export class UserService {
     }
 
     return this.userRepository.findOneBy({ id: c.getId });
+  }
+
+  public async getUsersByContacts(contacts: Contact[]): Promise<User> {
+    const options = [];
+
+    contacts.forEach((contact) => {
+      if (contact.type === 'email' || contact.type === 'phone') {
+        options.push({ value: contact.value, type: contact.type });
+      }
+
+      if (options.length > 1) {
+        return;
+      }
+    });
+
+    const contact = await this.contactRepository.findOne({
+      where: options,
+      relations: ['user'],
+    });
+
+    if (!contact) {
+      throw new HttpException(
+        `User with this contacts doesn't exist`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return contact.getUser;
   }
 }

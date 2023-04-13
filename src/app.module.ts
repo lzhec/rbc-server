@@ -1,14 +1,20 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TaskModule } from '@task/task.module';
 import { UserModule } from '@user/user.module';
-import { typeOrmAsyncConfig } from '@config/typeorm.config';
 import { RoleModule } from '@role/role.module';
 import { AuthModule } from '@auth/auth.module';
+import { AuthMiddleware } from '@auth/auth.middleware';
 
 const IS_PROD = process.env.NODE_ENV === 'prod';
 
@@ -37,6 +43,14 @@ const IS_PROD = process.env.NODE_ENV === 'prod';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  public configure(consumer: MiddlewareConsumer): void {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude({ path: 'api/auth/signup/client', method: RequestMethod.POST })
+      .exclude({ path: 'api/auth/signup/employee', method: RequestMethod.POST })
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}

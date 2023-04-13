@@ -8,8 +8,9 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 
 import { UserService } from '@user/user.service';
-import { CreateUserDTO, User } from '@user/model/user/user';
+import { User } from '@user/model/user/user';
 import { MemberType, MemberTypeEnum } from '@user/model/member.type';
+import { CreateUserDTO } from '@shared/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,14 +29,13 @@ export class AuthService {
     dto: CreateUserDTO,
     memberType: MemberType,
   ): Promise<{ token: string }> {
-    const candidate = await this.userService.getUsersByContact(
-      dto.contacts[0],
-      false,
-    );
+    const candidate = await this.userService
+      .getUsersByContacts(dto.contacts)
+      .catch(() => null);
 
     if (candidate) {
       throw new HttpException(
-        `User with this ${dto.contacts[0].getType} already exists`,
+        `User with this contacts already exists`,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -64,7 +64,7 @@ export class AuthService {
 
   private async generateToken(user: User): Promise<{ token: string }> {
     const payload = {
-      contacts: user.contacts[0],
+      contacts: user.contacts,
       id: user.getId,
       roles: user.getRoles,
     };

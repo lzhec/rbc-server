@@ -12,6 +12,7 @@ import { Service } from '@task/model/service/service';
 import { TaskType } from '@task/model/service/task-type';
 import { Status } from '@task/model/status/status';
 import { Priority } from '@task/model/priority/priority';
+import { TaskHistory } from '@task/model/task-history/task-history';
 
 @Module({
   controllers: [
@@ -23,7 +24,14 @@ import { Priority } from '@task/model/priority/priority';
   ],
   providers: [TaskService],
   imports: [
-    TypeOrmModule.forFeature([Task, Service, TaskType, Status, Priority]),
+    TypeOrmModule.forFeature([
+      Task,
+      Service,
+      TaskType,
+      Status,
+      Priority,
+      TaskHistory,
+    ]),
   ],
   exports: [TaskService],
 })
