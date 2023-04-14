@@ -106,30 +106,27 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  public async getUsersByContact(
-    contact: Contact,
-    withException = true,
-  ): Promise<User> {
-    const c = await this.contactRepository.findOneBy({
-      value: contact.getValue,
-      type: contact.getType,
+  public async getUserByContact(contact: Contact): Promise<User> {
+    const options = {
+      value: contact.value,
+      type: contact.type,
+    };
+    const c = await this.contactRepository.findOne({
+      where: options,
+      relations: ['user'],
     });
 
     if (!c) {
-      if (withException) {
-        throw new HttpException(
-          `User with this ${contact.getType} doesn't exist`,
-          HttpStatus.NOT_FOUND,
-        );
-      } else {
-        return null;
-      }
+      throw new HttpException(
+        `User with this ${contact.type} doesn't exist`,
+        HttpStatus.NOT_FOUND,
+      );
     }
 
-    return this.userRepository.findOneBy({ id: c.getId });
+    return c.getUser;
   }
 
-  public async getUsersByContacts(contacts: Contact[]): Promise<User> {
+  public async getUserByContacts(contacts: Contact[]): Promise<User> {
     const options = [];
 
     contacts.forEach((contact) => {

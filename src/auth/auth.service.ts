@@ -30,7 +30,7 @@ export class AuthService {
     memberType: MemberType,
   ): Promise<{ token: string }> {
     const candidate = await this.userService
-      .getUsersByContacts(dto.contacts)
+      .getUserByContacts(dto.contacts)
       .catch(() => null);
 
     if (candidate) {
@@ -75,7 +75,7 @@ export class AuthService {
   }
 
   private async validateUser(dto: CreateUserDTO): Promise<User> {
-    const user = await this.userService.getUsersByContact(dto.contacts[0]);
+    const user = await this.userService.getUserByContact(dto.contacts[0]);
     const passwordEquals = await bcrypt.compare(dto.password, user.password);
 
     if (user && passwordEquals) {
