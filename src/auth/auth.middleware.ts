@@ -18,8 +18,6 @@ export class AuthMiddleware implements NestMiddleware {
       throw new UnauthorizedException('You are not authorized');
     }
 
-    console.log(this.jwtService.verify(token));
-
     request['user'] = this.jwtService.verify(token);
 
     next();
