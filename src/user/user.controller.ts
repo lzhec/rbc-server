@@ -1,10 +1,16 @@
 import { Controller, Get, HttpStatus } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 import { User } from './model/user/user';
 
 @ApiTags('UserController')
+@ApiBearerAuth()
 @Controller('/api/user')
 export class UserController {
   constructor(private userService: UserService) {}

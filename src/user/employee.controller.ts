@@ -1,11 +1,17 @@
 import { Body, Controller, Get, HttpStatus, Post, Put } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 import { Employee } from './model/user/employee';
 import { CreateUserDTO } from '@shared/dto/create-user.dto';
 
 @ApiTags('EmployeeController')
+@ApiBearerAuth()
 @Controller('/api/user/employee')
 export class EmployeeController {
   constructor(private userService: UserService) {}

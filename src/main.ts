@@ -13,6 +13,7 @@ async function bootstrap() {
     .setTitle('Rubicon')
     .setDescription('REST API')
     .setVersion('1.0')
+    .addBearerAuth()
     .addTag('RBC')
     .build();
   const DOCUMENT = SwaggerModule.createDocument(APP, CONFIG);

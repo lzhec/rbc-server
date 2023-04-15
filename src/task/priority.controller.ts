@@ -1,10 +1,16 @@
 import { Body, Controller, Get, HttpStatus, Post, Put } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { TaskService } from '@task/task.service';
 import { Priority } from '@task/model/priority/priority';
 
 @ApiTags('PriorityController')
+@ApiBearerAuth()
 @Controller('/api/priority')
 export class PriorityController {
   constructor(private taskService: TaskService) {}

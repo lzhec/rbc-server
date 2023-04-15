@@ -106,6 +106,13 @@ export class UserService {
     return await this.userRepository.find();
   }
 
+  public async getUserById(id: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { id: id },
+      relations: ['contacts'],
+    });
+  }
+
   public async getUserByContact(contact: Contact): Promise<User> {
     const options = {
       value: contact.value,
@@ -153,4 +160,17 @@ export class UserService {
 
     return contact.getUser;
   }
+
+  // private async validateUser(dto: ChangeUserPasswordDTO): Promise<User> {
+  //   const user = await this.getUserById(dto.id);
+  //   const passwordEquals = await bcrypt.compare(dto.password, user.password);
+  //
+  //   if (user && passwordEquals) {
+  //     return user;
+  //   }
+  //
+  //   throw new UnauthorizedException({
+  //     message: 'User password is incorrect',
+  //   });
+  // }
 }

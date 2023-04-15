@@ -14,11 +14,12 @@ export abstract class Member {
   private archived: boolean;
 
   @ApiProperty({ type: MemberType })
-  @Column('text', {
+  @Column('jsonb', {
     name: 'member_type',
     nullable: false,
+    default: {},
   })
-  private memberType: MemberType;
+  public memberType: MemberType;
 
   /**
    * Getters & Setters

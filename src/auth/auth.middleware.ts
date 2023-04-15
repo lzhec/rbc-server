@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { NextFunction, Request, Response } from 'express';
+import { verify } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -18,7 +19,7 @@ export class AuthMiddleware implements NestMiddleware {
       throw new UnauthorizedException('You are not authorized');
     }
 
-    request['user'] = this.jwtService.verify(token);
+    request['user'] = verify(token, process.env.PRIVATE_KEY);
 
     next();
   }
