@@ -1,6 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { PrimaryGeneratedColumn } from 'typeorm';
-
 export enum StatusPointEnum {
   NEW,
   IN_WORK,
@@ -10,16 +7,23 @@ export enum StatusPointEnum {
 }
 
 export class StatusPoint {
-  @ApiProperty()
-  @PrimaryGeneratedColumn('uuid')
-  public readonly id: string;
+  public id: StatusPointEnum;
+  public name: keyof typeof StatusPointEnum;
 
-  @ApiProperty()
-  public name: string;
+  constructor(id: StatusPointEnum, name: keyof typeof StatusPointEnum) {
+    this.id = id;
+    this.name = name;
+  }
 
-  public static NEW = StatusPointEnum.NEW;
-  public static IN_WORK = StatusPointEnum.IN_WORK;
-  public static CLOSED = StatusPointEnum.CLOSED;
-  public static REJECTED = StatusPointEnum.REJECTED;
-  public static ACCEPTED = StatusPointEnum.ACCEPTED;
+  public static NEW = new StatusPoint(StatusPointEnum.NEW, 'NEW');
+  public static IN_WORK = new StatusPoint(StatusPointEnum.IN_WORK, 'IN_WORK');
+  public static CLOSED = new StatusPoint(StatusPointEnum.CLOSED, 'CLOSED');
+  public static REJECTED = new StatusPoint(
+    StatusPointEnum.REJECTED,
+    'REJECTED',
+  );
+  public static ACCEPTED = new StatusPoint(
+    StatusPointEnum.ACCEPTED,
+    'ACCEPTED',
+  );
 }

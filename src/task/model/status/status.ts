@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { StatusPointEnum } from '@task/model/status/status-point.enum';
+import { StatusPoint } from '@task/model/status/status-point.enum';
 
 @Entity()
 export class Status {
@@ -18,7 +18,7 @@ export class Status {
   public color: string;
 
   @ApiProperty()
-  @Column('integer', { default: 0 })
+  @Column('integer', { nullable: false, default: 0 })
   public weight: number;
 
   @ApiProperty()
@@ -26,8 +26,8 @@ export class Status {
   public archived: boolean;
 
   @ApiProperty()
-  @Column('text', { name: 'status_point' })
-  public statusPoint: StatusPointEnum;
+  @Column('jsonb', { name: 'status_point' })
+  public statusPoint: StatusPoint;
 
   public static fromObject(obj: Status): Status {
     const status = new Status();

@@ -8,48 +8,39 @@ export enum MemberTypeEnum {
 }
 
 @ApiTags()
-export class MemberType {
+export class MemberType<T = any> {
   @ApiProperty()
-  name: string;
+  name: keyof typeof MemberTypeEnum;
 
   @ApiProperty()
-  type: number;
+  type: MemberTypeEnum;
 
   @ApiProperty()
   paramName: string;
 
   @ApiProperty()
-  entityClass: string;
+  entityClass: T;
 
   constructor(
-    name: string,
-    type: number,
-    paramName: string,
-    entityClass: string,
+    name: keyof typeof MemberTypeEnum,
+    type: MemberTypeEnum,
+    entityClass: T,
   ) {
     this.name = name;
     this.type = type;
-    this.paramName = paramName;
     this.entityClass = entityClass;
   }
 
-  public static EMPLOYEE: MemberType = new MemberType(
-    'Employee',
-    0,
-    'employee',
-    '',
-  );
-  public static CLIENT: MemberType = new MemberType('Client', 1, 'client', '');
-  public static EMPLOYEE_GROUP: MemberType = new MemberType(
-    'Employee group',
+  public static EMPLOYEE = new MemberType('EMPLOYEE', 0, 'Employee');
+  public static CLIENT = new MemberType('CLIENT', 1, 'Client');
+  public static EMPLOYEE_GROUP = new MemberType(
+    'EMPLOYEE_GROUP',
     2,
-    'employeeGroup',
-    '',
+    'EmployeeGroup',
   );
-  public static CLIENT_COMPANY: MemberType = new MemberType(
-    'Client company',
+  public static CLIENT_COMPANY = new MemberType(
+    'CLIENT_COMPANY',
     3,
-    'clientCompany',
-    '',
+    'ClientCompany',
   );
 }
