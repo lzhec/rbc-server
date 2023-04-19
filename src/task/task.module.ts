@@ -13,6 +13,7 @@ import { TaskType } from '@task/model/service/task-type';
 import { Status } from '@task/model/status/status';
 import { Priority } from '@task/model/priority/priority';
 import { TaskHistory } from '@task/model/task-history/task-history';
+import { UserModule } from '@user/user.module';
 
 @Module({
   controllers: [
@@ -32,6 +33,7 @@ import { TaskHistory } from '@task/model/task-history/task-history';
       Priority,
       TaskHistory,
     ]),
+    UserModule,
   ],
   exports: [TaskService],
 })

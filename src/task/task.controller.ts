@@ -7,13 +7,19 @@ import {
   Put,
   Req,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Request } from 'express';
 
 import { TaskService } from '@task/task.service';
 import { Task } from '@task/task/task';
 
 @ApiTags('TaskController')
+@ApiBearerAuth()
 @Controller('/api/task')
 export class TaskController {
   constructor(private taskService: TaskService) {}

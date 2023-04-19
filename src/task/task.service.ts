@@ -8,6 +8,7 @@ import { Service } from '@task/model/service/service';
 import { TaskType } from '@task/model/service/task-type';
 import { Status } from '@task/model/status/status';
 import { Priority } from '@task/model/priority/priority';
+import { UserService } from '@user/user.service';
 
 @Injectable()
 export class TaskService {
@@ -22,6 +23,7 @@ export class TaskService {
     private statusRepository: Repository<Status>,
     @InjectRepository(Priority)
     private priorityRepository: Repository<Priority>,
+    private userService: UserService,
   ) {}
 
   public async getAllTasks(): Promise<Task[]> {
@@ -45,6 +47,11 @@ export class TaskService {
   }
 
   public async createTask(dto: Task, req: Request): Promise<Task> {
+    const user = await this.userService.getUserById(req['user'].id);
+
+    dto.audit.createdBy = user.getId;
+    dto.audit.createdAt = new Date();
+
     return null;
   }
 

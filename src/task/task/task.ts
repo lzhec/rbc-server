@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   Entity,
+  Generated,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -37,6 +38,7 @@ export class Task {
 
   @ApiProperty()
   @Column('bigint')
+  @Generated('increment')
   public number: number;
 
   @ApiProperty()
