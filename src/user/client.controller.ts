@@ -10,7 +10,7 @@ import { UserService } from './user.service';
 import { Client } from './model/user/client';
 import { CreateUserDTO } from '@shared/dto/create-user.dto';
 
-@ApiTags('ClientController')
+@ApiTags('UserController')
 @ApiBearerAuth()
 @Controller('/api/user/client')
 export class ClientController {

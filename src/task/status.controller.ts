@@ -1,11 +1,17 @@
 import { Body, Controller, Get, HttpStatus, Post, Put } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { TaskService } from '@task/task.service';
 import { Status } from '@task/model/status/status';
 
-@ApiTags('StatusController')
-@Controller('/api/status')
+@ApiTags('TaskController')
+@ApiBearerAuth()
+@Controller('/api/task/status')
 export class StatusController {
   constructor(private taskService: TaskService) {}
 
@@ -19,14 +25,14 @@ export class StatusController {
   @ApiOperation({ summary: 'Create new status' })
   @ApiResponse({ status: HttpStatus.CREATED, type: Status })
   @Post()
-  private create(@Body() status: Status): Promise<Status> {
-    return this.taskService.createStatus(status);
+  private create(@Body() dto: Status): Promise<Status> {
+    return this.taskService.createStatus(dto);
   }
 
   @ApiOperation({ summary: 'Update status' })
   @ApiResponse({ status: HttpStatus.OK, type: Status })
   @Put()
-  private update(@Body() status: Status): Promise<Status> {
-    return this.taskService.updateStatus(status);
+  private update(@Body() dto: Status): Promise<Status> {
+    return this.taskService.updateStatus(dto);
   }
 }

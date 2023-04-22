@@ -46,13 +46,22 @@ export class TaskService {
     return await this.priorityRepository.find();
   }
 
+  public async getTaskById(id: string): Promise<Task> {
+    return this.taskRepository.findOne({ where: { id: id } });
+  }
+
   public async createTask(dto: Task, req: Request): Promise<Task> {
     const user = await this.userService.getUserById(req['user'].id);
 
     dto.audit.createdBy = user.getId;
     dto.audit.createdAt = new Date();
+    dto.initiator = user;
 
-    return null;
+    // const history: TaskHistoryEvent[] = dto.history
+
+    const newTask = this.taskRepository.create(dto);
+
+    return this.taskRepository.save(newTask);
   }
 
   public async createPriority(dto: Priority): Promise<Priority> {
@@ -65,6 +74,12 @@ export class TaskService {
     const newStatus = this.statusRepository.create(dto);
 
     return this.statusRepository.save(newStatus);
+  }
+
+  public async createTaskType(dto: TaskType): Promise<TaskType> {
+    const newTaskType = this.taskTypeRepository.create(dto);
+
+    return this.taskTypeRepository.save(newTaskType);
   }
 
   public async createService(dto: Service): Promise<Service> {

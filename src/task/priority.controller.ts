@@ -9,9 +9,9 @@ import {
 import { TaskService } from '@task/task.service';
 import { Priority } from '@task/model/priority/priority';
 
-@ApiTags('PriorityController')
+@ApiTags('TaskController')
 @ApiBearerAuth()
-@Controller('/api/priority')
+@Controller('/api/task/priority')
 export class PriorityController {
   constructor(private taskService: TaskService) {}
 

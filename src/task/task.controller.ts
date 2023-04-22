@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   Put,
   Req,
@@ -43,5 +44,12 @@ export class TaskController {
   @Put()
   private update(@Body() task: Task): Promise<Task> {
     return this.taskService.updateTask(task);
+  }
+
+  @ApiOperation({ summary: 'Get task' })
+  @ApiResponse({ status: HttpStatus.OK, type: Task })
+  @Get('/:id')
+  private getOne(@Param('id') id: string): Promise<Task> {
+    return this.taskService.getTaskById(id);
   }
 }

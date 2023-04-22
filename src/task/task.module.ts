@@ -12,7 +12,7 @@ import { Service } from '@task/model/service/service';
 import { TaskType } from '@task/model/service/task-type';
 import { Status } from '@task/model/status/status';
 import { Priority } from '@task/model/priority/priority';
-import { TaskHistory } from '@task/model/task-history/task-history';
+import { TaskHistoryEvent } from '@task/model/task-history-event/task-history-event';
 import { UserModule } from '@user/user.module';
 
 @Module({
@@ -31,7 +31,7 @@ import { UserModule } from '@user/user.module';
       TaskType,
       Status,
       Priority,
-      TaskHistory,
+      TaskHistoryEvent,
     ]),
     UserModule,
   ],

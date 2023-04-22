@@ -27,10 +27,6 @@ export class Service {
   @Column('text')
   public description: string;
 
-  @ApiProperty()
-  @Column('integer', { nullable: false })
-  public weight: number;
-
   @ApiProperty({ name: 'inherit_bind' })
   @Column('boolean', { name: 'task_type_binding_inherit' })
   public taskTypeBindingInherit: boolean;

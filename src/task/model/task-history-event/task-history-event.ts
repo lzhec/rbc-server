@@ -6,7 +6,7 @@ import { User } from '@user/model/user/user';
 import { Comment } from '@task/model/comment/comment';
 
 @Entity()
-export class TaskHistory {
+export class TaskHistoryEvent {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   public readonly id: string;
@@ -17,7 +17,11 @@ export class TaskHistory {
   @ManyToOne(() => User)
   public author: User;
 
-  @Column({ name: 'event_date' })
+  @Column('timestamp with time zone', {
+    name: 'event_date',
+    nullable: false,
+    default: new Date(),
+  })
   public eventDate: Date;
 
   @Column('text')

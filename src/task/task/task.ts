@@ -15,7 +15,7 @@ import { TaskType } from '@task/model/service/task-type';
 import { Service } from '@task/model/service/service';
 import { Priority } from '@task/model/priority/priority';
 import { Status } from '@task/model/status/status';
-import { TaskHistory } from '@task/model/task-history/task-history';
+import { TaskHistoryEvent } from '@task/model/task-history-event/task-history-event';
 import { Group } from '@user/model/group/group';
 import { User } from '@user/model/user/user';
 import { IntervalDate } from '@shared/util/interval-date';
@@ -146,10 +146,20 @@ export class Task {
   public observerGroups: Group[];
 
   @ApiProperty()
-  @OneToMany(() => TaskHistory, (history) => history.task, { cascade: true })
-  public history: TaskHistory[];
+  @OneToMany(() => TaskHistoryEvent, (history) => history.task, {
+    cascade: true,
+  })
+  public history: TaskHistoryEvent[];
 
   @ApiProperty()
   @Column('boolean', { default: false })
   public archived: boolean;
+
+  public static fromObject(obj: Task): Task {
+    const task = new Task();
+
+    Object.assign(task, obj);
+
+    return task;
+  }
 }
